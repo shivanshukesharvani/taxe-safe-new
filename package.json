@@ -1,6 +1,6 @@
 {
   "name": "taxsafe-backend",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Backend API for Tax Filing Mistake Checker (Crash-Resistant, Azure-ready)",
   "private": true,
   "main": "index.js",
@@ -8,7 +8,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "build": "echo \"Building project...\"",
-    "test": "echo \"No tests specified\""
+    "test": "echo \"No tests specified\" && exit 0"
   },
   "keywords": [
     "tax",
@@ -22,10 +22,12 @@
   "author": "Shivanshu Kesharvani",
   "license": "ISC",
   "dependencies": {
+    "@azure/msal-node": "^3.8.4",
     "axios": "^1.6.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "mongoose": "^9.1.2",
     "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
