@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# tax-filing-demo
-=======
 # Tax Filing Mistake Checker - Backend API
 
 A **STABLE, CRASH-RESISTANT** Node.js backend API for analyzing tax filing data and detecting potential mistakes. Built for Microsoft Imagine Cup–level projects with reliability as the top priority.
@@ -419,4 +416,3 @@ For issues or questions, please open an issue on GitHub.
 ---
 
 **Built for stability. Designed for demos. Ready for production.**
->>>>>>> 3f678b4 (Initial commit)

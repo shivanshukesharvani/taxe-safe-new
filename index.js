@@ -6,17 +6,14 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const errorHandler = require('./middlewares/errorHandler');
 
 // Load environment variables
 dotenv.config();
 
-const app = express();
-const PORT = Number(process.env.PORT) || 3000;
-
 // ============================================
 // CRASH SAFETY: Global error handlers
 // ============================================
+// Moved to top to catch import errors
 process.on('uncaughtException', (error) => {
   console.error('UNCAUGHT EXCEPTION - Server will continue running:', error.message);
   console.error(error.stack);
@@ -27,6 +24,9 @@ process.on('unhandledRejection', (reason, promise) => {
   console.error('UNHANDLED REJECTION - Server will continue running:', reason);
   // Keep server alive - don't crash
 });
+
+const app = express();
+const PORT = Number(process.env.PORT) || 3000;
 
 // ============================================
 // Middleware Configuration
@@ -80,7 +80,8 @@ try {
   const analyzeRoutes = require('./routes/analyze');
   app.use('/api', analyzeRoutes);
 } catch (error) {
-  console.error('Failed to load analyze routes:', error.message);
+  console.error('CRITICAL: Failed to load analyze routes. API endpoint /api/analyze will not work.');
+  console.error(error.stack);
   // Server continues, but /api/analyze will return 404
 }
 
@@ -92,7 +93,16 @@ app.use((req, res) => {
 });
 
 // Error handler (must be last)
-app.use(errorHandler);
+try {
+  const errorHandler = require('./middlewares/errorHandler');
+  app.use(errorHandler);
+} catch (error) {
+  console.warn('Warning: errorHandler middleware missing, using default fallback.');
+  app.use((err, req, res, next) => {
+    console.error('Fallback Error Handler:', err.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  });
+}
 
 // ============================================
 // Start Server
@@ -134,4 +144,3 @@ process.on('SIGINT', () => {
 });
 
 module.exports = app;
-
